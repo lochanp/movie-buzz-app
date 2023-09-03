@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import Navbar from "./components/Navbar";
 import MainContent from "./components/MainContent";
 import SearchField from "./components/navbar/SearchField";
@@ -21,7 +21,7 @@ export default function App() {
   const [selectedMovieId, setselectedMovieId] = useState(null)
 // 
   // const controller = new AbortController()
-  const controller = useMemo(() => new AbortController(),[])
+  const controller = new AbortController()
 
   const empty = query.length <= 0
 
@@ -110,8 +110,7 @@ export default function App() {
     fetchMovies()
 
     return () => controller.abort()
-  }, [query,controller])
-
+  }, [query]) // eslint-disable-line
 
   return (
     <>
