@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useRef } from 'react'
 import { useKey } from '../../utils/useKey';
 
 const SearchField = ({query,setQuery}) => {
