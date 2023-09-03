@@ -49,7 +49,7 @@ export default function App() {
       try{
         setisLoading(true)
         seterror('')
-        const res = await fetch(`http://www.omdbapi.com/?apikey=${APIKEY}&s=movie`)
+        const res = await fetch(`https://www.omdbapi.com/?apikey=${APIKEY}&s=movie`)
         if(!res.ok) throw new Error('something went wrong!')
         const data = await res.json()
         if(data.Response === 'False') {
@@ -81,7 +81,7 @@ export default function App() {
       try{
         setisLoading(true)
         seterror('')
-        const res = await fetch(`http://www.omdbapi.com/?apikey=${APIKEY}&s=${query}`,{signal:controller.signal})
+        const res = await fetch(`https://www.omdbapi.com/?apikey=${APIKEY}&s=${query}`,{signal:controller.signal})
         if(!res.ok) throw new Error('something went wrong!')
         const data = await res.json()
         if(data.Response === 'False') {
