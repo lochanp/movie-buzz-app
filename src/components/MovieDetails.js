@@ -24,7 +24,7 @@ export  const MovieDetails = ({onClose,selectedMovieId,handleAddWatched,watchedM
       const getMovieDetails = async () => {
           try {
               setloader(true)
-              const res = await fetch(`http://www.omdbapi.com/?apikey=${APIKEY}&i=${selectedMovieId}`);
+              const res = await fetch(`https://www.omdbapi.com/?apikey=${APIKEY}&i=${selectedMovieId}`);
               const data = await res.json();
               setMovie(data)
               setloader(false)
