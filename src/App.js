@@ -9,6 +9,7 @@ import MovieList from './components/MovieList';
 import { Loader } from './components/Loader';
 import { MovieDetails } from './components/MovieDetails';
 import { useLocalStorage } from './utils/useLocalStorage';
+import { useDebounce } from './utils/useDebounce';
 
 const APIKEY = '3459bda0';
 
@@ -40,6 +41,8 @@ export default function App() {
   const handleDeleteWatched = id => {
     setwatchedMovies(watched => watched.filter(movie => movie.imdbID !== id));
   };
+
+  const debounceSearch = useDebounce(query, 1000);
 
   useEffect(() => {
     /** data fetching with Promise **/
@@ -73,12 +76,13 @@ export default function App() {
     /** data fetching with Promise **/
     // fetch(`http://www.omdbapi.com/?apikey=${APIKEY}&s=${query}`).then(res=>res.json()).then(data =>setMovies(data.Search))
     /* Data fetchingwith async await */
-    let timer;
     const fetchMovies = async () => {
       try {
         setisLoading(true);
         seterror('');
-        const res = await fetch(`https://www.omdbapi.com/?apikey=${APIKEY}&s=${query}`, { signal: controller.signal });
+        const res = await fetch(`https://www.omdbapi.com/?apikey=${APIKEY}&s=${debounceSearch}`, {
+          signal: controller.signal
+        });
         if (!res.ok) throw new Error('something went wrong!');
         const data = await res.json();
         if (data.Response === 'False') {
@@ -95,22 +99,16 @@ export default function App() {
         setisLoading(false);
       }
     };
-    if (query.length < 3) {
+    if (debounceSearch.length < 3) {
       setMovies([]);
       seterror('');
       return;
     }
     handleCloseMovie();
+    fetchMovies();
 
-    timer = setTimeout(() => {
-      fetchMovies();
-    }, 1000);
-
-    return () => {
-      controller.abort();
-      clearTimeout(timer);
-    };
-  }, [query]); // eslint-disable-line
+    return () => controller.abort();
+  }, [debounceSearch]); // eslint-disable-line
 
   return (
     <>
